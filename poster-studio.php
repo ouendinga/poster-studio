@@ -1,18 +1,18 @@
 <?php
 /**
- * My PDF Plugin
+ * Poster Studio
  *
- * @package           MyPDFPlugin
+ * @package           PosterStudio
  * @author            Álvaro Solís Pascual
  * @copyright         2023 Álvaro Solís Pascual
  * @license           GPL-2.0-or-later
  *
  * @wordpress-plugin
- * Plugin Name:       My PDF Plugin
+ * Plugin Name:       Poster Studio
  * Description:       A plugin to generate PDF from post content
  * Version:           1.0.0
  * Author:            Álvaro Solís Pascual
- * Text Domain:       my-pdf-plugin
+ * Text Domain:       poster-studio
  * License:           GPL v2 or later
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires at least: 5.2
@@ -29,29 +29,29 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * This function runs when the plugin is activated.
  */
-function my_pdf_plugin_activate() {
+function poster_studio_activate() {
     // Add activation tasks here (e.g., create database tables, add options).
     // Flush rewrite rules.
     flush_rewrite_rules();
 }
-register_activation_hook( __FILE__, 'my_pdf_plugin_activate' );
+register_activation_hook( __FILE__, 'poster_studio_activate' );
 
 /**
  * Plugin deactivation hook.
  *
  * This function runs when the plugin is deactivated.
  */
-function my_pdf_plugin_deactivate() {
+function poster_studio_deactivate() {
     // Add deactivation tasks here (e.g., remove temporary data).
     // Flush rewrite rules.
     flush_rewrite_rules();
 }
-register_deactivation_hook( __FILE__, 'my_pdf_plugin_deactivate' );
+register_deactivation_hook( __FILE__, 'poster_studio_deactivate' );
 
 /**
  * Main plugin class.
  */
-class My_PDF_Plugin {
+class Poster_Studio {
     /**
      * Constructor.
      */
@@ -70,10 +70,10 @@ class My_PDF_Plugin {
      * Define plugin constants.
      */
     private function define_constants() {
-        define( 'MY_PDF_PLUGIN_VERSION', '1.0.0' );
-        define( 'MY_PDF_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-        define( 'MY_PDF_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-        define( 'MY_PDF_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+        define( 'POSTER_STUDIO_VERSION', '1.0.0' );
+        define( 'POSTER_STUDIO_PATH', plugin_dir_path( __FILE__ ) );
+        define( 'POSTER_STUDIO_URL', plugin_dir_url( __FILE__ ) );
+        define( 'POSTER_STUDIO_BASENAME', plugin_basename( __FILE__ ) );
     }
 
     /**
@@ -83,22 +83,22 @@ class My_PDF_Plugin {
 
         // Check if TCPDF is available (to be added with Composer later)
         $tcpdf_available = false;
-        if ( file_exists( MY_PDF_PLUGIN_PATH . 'vendor/autoload.php' ) ) {
-            require_once MY_PDF_PLUGIN_PATH . 'vendor/autoload.php';
+        if ( file_exists( POSTER_STUDIO_PATH . 'vendor/autoload.php' ) ) {
+            require_once POSTER_STUDIO_PATH . 'vendor/autoload.php';
             $tcpdf_available = class_exists( 'TCPDF' );
         }
 
         // Initialize components if dependencies are met
         if ( $tcpdf_available ) {
             // Include core classes
-            require_once MY_PDF_PLUGIN_PATH . 'includes/class-pdf-generator.php';
-            require_once MY_PDF_PLUGIN_PATH . 'includes/class-frontend-handler.php';
+            require_once POSTER_STUDIO_PATH . 'includes/class-pdf-generator.php';
+            require_once POSTER_STUDIO_PATH . 'includes/class-frontend-handler.php';
 
             // Initialize PDF Generator
-            $pdf_generator = new \MyPDFPlugin\PDF_Generator();
+            $pdf_generator = new \PosterStudio\PDF_Generator();
             
             // Initialize Frontend Handler
-            $frontend_handler = new \MyPDFPlugin\Frontend_Handler( $pdf_generator );
+            $frontend_handler = new \PosterStudio\Frontend_Handler( $pdf_generator );
         } else {
             // Add admin notice if TCPDF is not available
             add_action( 'admin_notices', array( $this, 'tcpdf_missing_notice' ) );
@@ -111,7 +111,7 @@ class My_PDF_Plugin {
     public function tcpdf_missing_notice() {
         ?>
         <div class="notice notice-error">
-            <p><?php esc_html_e( 'My PDF Plugin requires TCPDF library. Please install it using Composer.', 'my-pdf-plugin' ); ?></p>
+            <p><?php esc_html_e( 'Poster Studio requires TCPDF library. Please install it using Composer.', 'poster-studio' ); ?></p>
         </div>
         <?php
     }
@@ -137,7 +137,7 @@ class My_PDF_Plugin {
      */
     public function init() {
         // Load text domain for internationalization.
-        load_plugin_textdomain( 'my-pdf-plugin', false, dirname( MY_PDF_PLUGIN_BASENAME ) . '/languages' );
+        load_plugin_textdomain( 'poster-studio', false, dirname( POSTER_STUDIO_BASENAME ) . '/languages' );
         
         // Other initialization tasks.
     }
@@ -146,10 +146,10 @@ class My_PDF_Plugin {
 /**
  * Initialize the plugin.
  */
-function my_pdf_plugin_init() {
-    return new My_PDF_Plugin();
+function poster_studio_init() {
+    return new Poster_Studio();
 }
 
 // Start the plugin.
-my_pdf_plugin_init();
+poster_studio_init();
 

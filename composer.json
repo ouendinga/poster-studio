@@ -1,5 +1,5 @@
 {
-    "name": "ouendinga/my-pdf-plugin",
+    "name": "ouendinga/poster-studio",
     "description": "A WordPress plugin to generate PDF from post content",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "MyPDFPlugin\\": "includes/"
+            "PosterStudio\\": "includes/"
         }
     }
 }

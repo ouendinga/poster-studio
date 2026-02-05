@@ -4,7 +4,7 @@
  *
  * This template is used to format WordPress post content for PDF generation.
  *
- * @package MyPDFPlugin
+ * @package PosterStudio
  */
 
 // Exit if accessed directly.
@@ -80,8 +80,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="pdf-header">
 		<h1><?php the_title(); ?></h1>
 		<div class="pdf-meta">
-			<?php esc_html_e( 'Published on', 'my-pdf-plugin' ); ?>: <?php the_date(); ?> 
-			<?php esc_html_e( 'by', 'my-pdf-plugin' ); ?> <?php the_author(); ?>
+			<?php esc_html_e( 'Published on', 'poster-studio' ); ?>: <?php the_date(); ?> 
+			<?php esc_html_e( 'by', 'poster-studio' ); ?> <?php the_author(); ?>
 		</div>
 	</div>
 
@@ -94,7 +94,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php bloginfo( 'name' ); ?> | <?php bloginfo( 'url' ); ?>
 		</div>
 		<div class="page-number">
-			<?php esc_html_e( 'Page', 'my-pdf-plugin' ); ?> <span class="page-number"></span>
+			<?php esc_html_e( 'Page', 'poster-studio' ); ?> <span class="page-number"></span>
 		</div>
 	</div>
 </body>
