@@ -57,12 +57,13 @@
     gap: 30px !important;
 }
 
-#gem-poster-studio-app .header-left h1 {
+#gem-poster-studio-app .header-center h1 {
     font-size: 24px !important;
     color: #fff !important;
     margin: 0 !important;
     font-weight: 900 !important;
     letter-spacing: -0.5px !important;
+    text-transform: uppercase !important;
 }
 
 #gem-poster-studio-app .back-link {
@@ -79,26 +80,14 @@
     color: #fff !important;
 }
 
-#gem-poster-studio-app .header-center p {
-    margin: 0 !important;
-    color: rgba(255, 255, 255, 0.9) !important;
-    font-weight: 600 !important;
-    font-size: 16px !important;
-    max-width: 400px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+#gem-poster-studio-app .header-left,
+#gem-poster-studio-app .header-right {
+    flex: 1 !important;
 }
 
-#gem-poster-studio-app .studio-badge {
-    background: rgba(255, 255, 255, 0.1) !important;
-    padding: 6px 15px !important;
-    border-radius: 20px !important;
-    font-size: 11px !important;
-    letter-spacing: 1.5px !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    text-transform: uppercase !important;
-    font-weight: 700 !important;
+#gem-poster-studio-app .header-right {
+    display: flex !important;
+    justify-content: flex-end !important;
 }
 
 /* Main Content Area */

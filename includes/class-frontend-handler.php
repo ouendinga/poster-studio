@@ -174,13 +174,12 @@ class Frontend_Handler {
 				<div class="pdf-editor-header">
 					<div class="header-left">
 						<a href="<?php echo get_edit_post_link($post->ID); ?>" class="back-link"><span class="dashicons dashicons-arrow-left-alt"></span> Tornar a la notícia</a>
-						<h1><?php _e( 'Poster Studio', 'my-pdf-plugin' ); ?></h1>
 					</div>
 					<div class="header-center">
-						<p><?php echo esc_html( get_the_title($post) ); ?></p>
+						<h1><?php _e( 'Poster Studio', 'poster-studio' ); ?></h1>
 					</div>
 					<div class="header-right">
-						<div class="studio-badge">V1.5 Professional</div>
+						<!-- Header Right Empty or for future use -->
 					</div>
 				</div>
 
