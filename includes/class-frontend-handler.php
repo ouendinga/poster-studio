@@ -247,8 +247,6 @@ class Frontend_Handler {
 							<span class="dashicons dashicons-pdf"></span> EXPORTAR A PDF
 						</button>
 
-						<div class="sidebar-divider"></div>
-
 						<h2>Arxiu i Paper</h2>
 						<div class="control-group">
 							<label for="pdf-page-size">Mida del Paper</label>
@@ -257,8 +255,6 @@ class Frontend_Handler {
 								<option value="A3" <?php selected( $page_format, 'A3' ); ?>>A3 (Poster Gran)</option>
 							</select>
 						</div>
-
-						<div class="sidebar-divider"></div>
 
 						<h2>Configuració de Text</h2>
 						
@@ -303,8 +299,6 @@ class Frontend_Handler {
 							<label>Amplada Imatge: <span id="val-image-width"><?php echo esc_html($image_width); ?></span>mm</label>
 							<input type="range" id="pdf-image-width" min="50" max="297" value="<?php echo esc_attr($image_width); ?>">
 						</div>
-
-						<div class="sidebar-divider"></div>
 
 						<div class="editor-info-box">
 							<h3>Informació</h3>
