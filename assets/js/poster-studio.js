@@ -122,7 +122,7 @@
 
             $(document).on('mousemove', function (e) {
                 if (!isDragging) return;
-                var deltaY = e.pageY - startY;
+                var deltaY = (e.pageY - startY) / self.userZoom; // Use userZoom to normalize speed
                 var newTop = startTop + deltaY;
                 if (newTop > 0) newTop = 0;
                 $('#pdf-preview-image').css('top', newTop + 'px');
@@ -226,6 +226,7 @@
             var $app = $('#gem-poster-studio-app');
             var $loading = $('.pdf-loading-indicator');
             var $btn = $(e.currentTarget);
+            var $canvas = $('#pdf-canvas');
 
             var customOptions = {
                 title: $('#edit-title').val(),
@@ -242,29 +243,75 @@
             $loading.addClass('active');
             $btn.prop('disabled', true);
 
-            $.ajax({
-                url: poster_studio.ajax_url,
-                type: 'POST',
-                data: {
-                    action: 'generate_pdf',
-                    post_id: $app.data('post-id'),
-                    nonce: $app.data('nonce'),
-                    custom_options: customOptions
-                },
-                success: function (response) {
-                    $loading.removeClass('active');
-                    $btn.prop('disabled', false);
-                    if (response.success && response.data.url) {
-                        window.open(response.data.url, '_blank');
-                    } else {
-                        alert(response.data.message || 'Error desconegut generant el PDF.');
+            // 1. Reset zoom to 1 before capturing to avoid scaling artifacts
+            var originalZoom = self.userZoom;
+            self.userZoom = 1;
+            self.adjustPreviewScale();
+
+            // 2. Capture with html2canvas (Scale for high DPI/Print quality)
+            // Temporarily hide shadow and FORCE transform to none for 1:1 pixel capture
+            var originalStyle = $canvas.attr('style');
+            $canvas.css({
+                'transform': 'none',
+                'transform-origin': 'unset',
+                'margin': '0',
+                'box-shadow': 'none'
+            });
+
+            html2canvas($canvas[0], {
+                scale: 3, // High resolution
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff'
+            }).then(function (capturedCanvas) {
+                var imageData = capturedCanvas.toDataURL('image/jpeg', 0.98);
+
+                // Restore original styles (including zoom transform)
+                $canvas.attr('style', originalStyle);
+                self.adjustPreviewScale(); // Re-apply current zoom
+
+                // 3. Send to server
+                $.ajax({
+                    url: posterStudio.ajax_url,
+                    type: 'POST',
+                    data: {
+                        action: 'poster_studio_generate_pdf',
+                        post_id: $app.data('post-id'),
+                        nonce: posterStudio.nonce,
+                        custom_options: customOptions,
+                        image_data: imageData // New: the actual visual capture
+                    },
+                    success: function (response) {
+                        $loading.removeClass('active');
+                        $btn.prop('disabled', false);
+
+                        if (response.success && response.data.url) {
+                            var link = document.createElement('a');
+                            link.href = response.data.url;
+                            var fileName = response.data.url.split('/').pop();
+                            link.download = fileName;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        } else {
+                            alert(response.data.message || 'Error desconegut generant el PDF.');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        $loading.removeClass('active');
+                        $btn.prop('disabled', false);
+                        console.error('PosterStudio Error:', error, status, xhr.responseText);
+                        alert('Error crític de comunicació amb el servidor. Revisa la consola o els logs.');
                     }
-                },
-                error: function () {
-                    $loading.removeClass('active');
-                    $btn.prop('disabled', false);
-                    alert('Error crític de comunicació amb el servidor.');
-                }
+                });
+            }).catch(function (err) {
+                $loading.removeClass('active');
+                $btn.prop('disabled', false);
+                // Restore zoom if error
+                self.userZoom = originalZoom;
+                self.adjustPreviewScale();
+                console.error('Capture Error:', err);
+                alert('Error al capturar la imatge del cartell.');
             });
         }
     };
